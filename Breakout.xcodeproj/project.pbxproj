@@ -14,6 +14,7 @@
 		DB0C9D201C8BD2AC004D1743 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB0C9D1E1C8BD2AC004D1743 /* LaunchScreen.storyboard */; };
 		DB0C9D2B1C8BD2AC004D1743 /* BreakoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0C9D2A1C8BD2AC004D1743 /* BreakoutTests.swift */; };
 		DB0C9D361C8BD2AC004D1743 /* BreakoutUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0C9D351C8BD2AC004D1743 /* BreakoutUITests.swift */; };
+		DB0C9D7E1C8C9FAC004D1743 /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0C9D7D1C8C9FAC004D1743 /* Block.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 		DB0C9D311C8BD2AC004D1743 /* BreakoutUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BreakoutUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB0C9D351C8BD2AC004D1743 /* BreakoutUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakoutUITests.swift; sourceTree = "<group>"; };
 		DB0C9D371C8BD2AC004D1743 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DB0C9D7D1C8C9FAC004D1743 /* Block.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Block.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +101,7 @@
 			children = (
 				DB0C9D151C8BD2AC004D1743 /* AppDelegate.swift */,
 				DB0C9D171C8BD2AC004D1743 /* ViewController.swift */,
+				DB0C9D7D1C8C9FAC004D1743 /* Block.swift */,
 				DB0C9D191C8BD2AC004D1743 /* Main.storyboard */,
 				DB0C9D1C1C8BD2AC004D1743 /* Assets.xcassets */,
 				DB0C9D1E1C8BD2AC004D1743 /* LaunchScreen.storyboard */,
@@ -259,6 +262,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DB0C9D7E1C8C9FAC004D1743 /* Block.swift in Sources */,
 				DB0C9D181C8BD2AC004D1743 /* ViewController.swift in Sources */,
 				DB0C9D161C8BD2AC004D1743 /* AppDelegate.swift in Sources */,
 			);
