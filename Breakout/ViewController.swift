@@ -72,9 +72,6 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
         dynamicAnimator = UIDynamicAnimator(referenceView: view)
         
         
-        var tapGesture = UITapGestureRecognizer(target: self, action: Selector("userHasTapped:"))
-        self.view.addGestureRecognizer(tapGesture)
-        
         
         setupViews()
         
@@ -164,8 +161,8 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
             
             let boundary = UIView(frame: CGRectMake(0, 600, 1000, 15))
             boundary.backgroundColor = UIColor.blackColor()
-            //view.addSubview(boundary)
-            //blocks.append(boundary)
+            view.addSubview(boundary)
+            blocks.append(boundary)
             
         
             
@@ -176,33 +173,27 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
             startBall.clipsToBounds = true
             startBallArray.append(startBall)
             
-            
-            
-            func userHasTapped(tap:UITapGestureRecognizer) {
-                var touchPoint = tap.locationInView(self.view)
-                if snapBehaviour != nil {
-                    dynamicAnimator.removeBehavior(snapBehaviour)
-                }
-                
-                snapBehaviour = UISnapBehavior(item: startBall, snapToPoint: touchPoint)
-                snapBehaviour.damping = 0.3
-                dynamicAnimator.addBehavior(snapBehaviour)
-            }
-
-            
-            
+            /////////
             
             var bothArray = blocks + startBallArray
             var pushBoth = blocks + test + bothArray
         
-        let dynamicItemBehavior = UIDynamicItemBehavior(items: bothArray)
-        //dynamicItemBehavior.density = 1.0
-        dynamicItemBehavior.friction = 0.0
-        dynamicItemBehavior.resistance = 0.0
-        dynamicItemBehavior.elasticity = 2.0
+        let dynamicItemBehavior = UIDynamicItemBehavior(items: blocks)
+        dynamicItemBehavior.density = 1000000.0
+        dynamicItemBehavior.friction = 100000000.0
+        dynamicItemBehavior.resistance = 10000000000.0
+        //dynamicItemBehavior.elasticity = 1.3
+        dynamicItemBehavior.allowsRotation = false
         dynamicAnimator.addBehavior(dynamicItemBehavior)
         
-        
+        let ballDynamicItemBehavior = UIDynamicItemBehavior(items: startBallArray)
+        dynamicItemBehavior.density = 1.0
+        ballDynamicItemBehavior.friction = 0.0
+        ballDynamicItemBehavior.resistance = 0.0
+        ballDynamicItemBehavior.elasticity = 1.3
+        dynamicAnimator.addBehavior(ballDynamicItemBehavior)
+
+            
         let collisionBehavior = UICollisionBehavior(items: bothArray)
         collisionBehavior.translatesReferenceBoundsIntoBoundary = true
         collisionBehavior.collisionMode = .Everything
@@ -214,14 +205,19 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
         let pushBehavior = UIPushBehavior(items: startBallArray, mode: .Continuous)
         pushBehavior.magnitude = 0.3
         pushBehavior.pushDirection = CGVectorMake(0, 0.9)
-       // dynamicAnimator.addBehavior(pushBehavior)
+        dynamicAnimator.addBehavior(pushBehavior)
         
         
     }
     
     
     func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item1: UIDynamicItem, withItem item2: UIDynamicItem, atPoint p: CGPoint) {
+        
+        
         print(p)
+        
+        
+        
     }
 
 
