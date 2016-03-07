@@ -13,6 +13,7 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
     
     var dynamicAnimator = UIDynamicAnimator()
     var dynamicAnimator2 = UIDynamicAnimator()
+    var snapBehaviour:UISnapBehavior!
 
     
     //distance between blocks horizontally
@@ -69,7 +70,11 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         dynamicAnimator = UIDynamicAnimator(referenceView: view)
-
+        
+        
+        var tapGesture = UITapGestureRecognizer(target: self, action: Selector("userHasTapped:"))
+        self.view.addGestureRecognizer(tapGesture)
+        
         
         setupViews()
         
@@ -171,14 +176,30 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
             startBall.clipsToBounds = true
             startBallArray.append(startBall)
             
+            
+            
+            func userHasTapped(tap:UITapGestureRecognizer) {
+                var touchPoint = tap.locationInView(self.view)
+                if snapBehaviour != nil {
+                    dynamicAnimator.removeBehavior(snapBehaviour)
+                }
+                
+                snapBehaviour = UISnapBehavior(item: startBall, snapToPoint: touchPoint)
+                snapBehaviour.damping = 0.3
+                dynamicAnimator.addBehavior(snapBehaviour)
+            }
+
+            
+            
+            
             var bothArray = blocks + startBallArray
             var pushBoth = blocks + test + bothArray
         
         let dynamicItemBehavior = UIDynamicItemBehavior(items: bothArray)
-        dynamicItemBehavior.density = 1.0
+        //dynamicItemBehavior.density = 1.0
         dynamicItemBehavior.friction = 0.0
         dynamicItemBehavior.resistance = 0.0
-        dynamicItemBehavior.elasticity = 3.0
+        dynamicItemBehavior.elasticity = 2.0
         dynamicAnimator.addBehavior(dynamicItemBehavior)
         
         
@@ -193,10 +214,11 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
         let pushBehavior = UIPushBehavior(items: startBallArray, mode: .Continuous)
         pushBehavior.magnitude = 0.3
         pushBehavior.pushDirection = CGVectorMake(0, 0.9)
-        dynamicAnimator.addBehavior(pushBehavior)
+       // dynamicAnimator.addBehavior(pushBehavior)
         
         
     }
+    
     
     func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item1: UIDynamicItem, withItem item2: UIDynamicItem, atPoint p: CGPoint) {
         print(p)
