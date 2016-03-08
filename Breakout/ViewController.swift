@@ -34,6 +34,10 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
     var blocks:[UIView] = []
     var startBallArray:[UIView] = []
     var allViews:[UIView] = []
+    var bothArray:[UIView] = []
+
+    
+    @IBOutlet weak var testView: UIView!
 
     
     override func viewDidLoad() {
@@ -54,6 +58,7 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
                 
                 blocks.append(block)
                 allViews.append(block)
+                bothArray.append(block)
                 
                 x += 60
             }
@@ -76,12 +81,9 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
         paddle.backgroundColor = UIColor.blackColor()
         view.addSubview(paddle)
         allViews.append(paddle)
+        bothArray.append(paddle)
 
-        
-        panRec.addTarget(self, action: "draggedView:")
-        paddle.addGestureRecognizer(panRec)
 
-        
         
         setupBehaviors()
         
@@ -95,7 +97,7 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
             //blocks.append(boundary)
             
             
-        let dynamicItemBehavior = UIDynamicItemBehavior(items: blocks)
+        let dynamicItemBehavior = UIDynamicItemBehavior(items: bothArray)
         dynamicItemBehavior.density = 1000000.0
         dynamicItemBehavior.elasticity = 1.0
         dynamicItemBehavior.allowsRotation = false
@@ -122,14 +124,10 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
     }
     
     @IBAction func paddleMovement(sender: UIPanGestureRecognizer) {
-              // dynamicAnimator.updateItemUsingCurrentState(paddle)
-    }
     
-    func draggedView(sender:UIPanGestureRecognizer){
-        self.view.bringSubviewToFront(sender.view!)
+        
         var translation = sender.translationInView(self.view)
         sender.view!.center = CGPointMake(sender.view!.center.x + translation.x, sender.view!.center.y + translation.y)
-        sender.setTranslation(CGPointZero, inView: self.view)
 
     }
     
