@@ -10,13 +10,12 @@ import UIKit
 
 class ViewController: UIViewController, UICollisionBehaviorDelegate {
     
+    @IBOutlet var startButton: UIButton!
+    @IBOutlet var paddle: UIView!
+
     
     var dynamicAnimator = UIDynamicAnimator()
     var collisionBehavior = UICollisionBehavior()
-    var ball:UIView!
-    var paddle:UIView!
-    
-    let panRec = UIPanGestureRecognizer()
 
     
     //length of block
@@ -25,48 +24,26 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
     //height of block
     let hob:CGFloat = 15.0
     
-    //columns
-    let columns = 13
     
-    //rows
-    let rows: CGFloat = 4
-
+    var ball:UIView!
+    
+    
     var blocks:[UIView] = []
     var startBallArray:[UIView] = []
     var allViews:[UIView] = []
     var bothArray:[UIView] = []
+    var paddleArray:[UIView] = []
+
 
     
-    @IBOutlet weak var testView: UIView!
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         dynamicAnimator = UIDynamicAnimator(referenceView: view)
-        
-        var x:CGFloat = 0
-        var y:CGFloat = 30
-        
-        for _ in 1...4
-        {
-            for _ in 1...13
-            {
-                let block = UIView(frame: CGRectMake(x, y, lob, hob))
-                block.backgroundColor = UIColor.blackColor()
-                view.addSubview(block)
-                
-                blocks.append(block)
-                allViews.append(block)
-                bothArray.append(block)
-                
-                x += 60
-            }
-            x = 0
-            y += 30
-        }
-
-        
+    
+        createBlocks()
         
         let ball = UIView(frame: CGRectMake(300, 300, 20, 20))
         ball.backgroundColor = UIColor.redColor()
@@ -75,69 +52,113 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
         ball.clipsToBounds = true
         startBallArray.append(ball)
         allViews.append(ball)
-
+        //ball.hidden = true
         
-        let paddle = UIView(frame: CGRectMake(260, 600, 70, 10))
-        paddle.backgroundColor = UIColor.blackColor()
-        view.addSubview(paddle)
+        
         allViews.append(paddle)
         bothArray.append(paddle)
-
-
+        paddleArray.append(paddle)
         
         setupBehaviors()
         
     }
    
+        func createBlocks()
+        {
+            
+            var x:CGFloat = 0
+            var y:CGFloat = 45
+            
+            for _ in 1...4
+            {
+                for _ in 1...13
+                {
+                    let block = UIView(frame: CGRectMake(x, y, lob, hob))
+                    block.backgroundColor = UIColor.blackColor()
+                    view.addSubview(block)
+                    
+                    blocks.append(block)
+                    allViews.append(block)
+                    bothArray.append(block)
+                    
+                    x += 60
+                }
+                x = 0
+                y += 30
+            }
+            
+
+        }
+    
+    
+    
         func setupBehaviors()
         {
-            //let boundary = UIView(frame: CGRectMake(0, 600, 1000, 15))
-            //boundary.backgroundColor = UIColor.blackColor()
-            //view.addSubview(boundary)
-            //blocks.append(boundary)
-            
-            
-        let dynamicItemBehavior = UIDynamicItemBehavior(items: bothArray)
-        dynamicItemBehavior.density = 1000000.0
-        dynamicItemBehavior.elasticity = 1.0
-        dynamicItemBehavior.allowsRotation = false
-        dynamicAnimator.addBehavior(dynamicItemBehavior)
-        
-        let ballDynamicItemBehavior = UIDynamicItemBehavior(items: startBallArray)
-        ballDynamicItemBehavior.friction = 0.0
-        ballDynamicItemBehavior.resistance = 0.0
-        ballDynamicItemBehavior.elasticity = 1.2
-        dynamicAnimator.addBehavior(ballDynamicItemBehavior)
 
+        let blockDynamicItemBehavior = UIDynamicItemBehavior(items: bothArray)
+        blockDynamicItemBehavior.density = 1000000.0
+        blockDynamicItemBehavior.elasticity = 1.0
+        blockDynamicItemBehavior.allowsRotation = false
+        dynamicAnimator.addBehavior(blockDynamicItemBehavior)
+        
+            
+        let ballDynamicBehavior = UIDynamicItemBehavior(items: startBallArray)
+        ballDynamicBehavior.friction = 0
+        ballDynamicBehavior.resistance = 0
+        ballDynamicBehavior.elasticity = 1.0
+        ballDynamicBehavior.allowsRotation = false
+        dynamicAnimator.addBehavior(ballDynamicBehavior)
+            
+            
+        let paddleDynamicBehavior = UIDynamicItemBehavior(items: paddleArray)
+        paddleDynamicBehavior.density = 1000
+        paddleDynamicBehavior.resistance = 100
+        paddleDynamicBehavior.allowsRotation = false
+        dynamicAnimator.addBehavior(paddleDynamicBehavior)
+
+            
+            
         let collisionBehavior = UICollisionBehavior(items: allViews)
         collisionBehavior.translatesReferenceBoundsIntoBoundary = true
         collisionBehavior.collisionMode = .Everything
         collisionBehavior.collisionDelegate = self
         dynamicAnimator.addBehavior(collisionBehavior)
             
-        let pushBehavior = UIPushBehavior(items: startBallArray, mode: .Continuous)
-        pushBehavior.magnitude = 0.3
-        pushBehavior.pushDirection = CGVectorMake(0, 0.9)
+    }
+    
+    
+    
+    
+    @IBAction func gestureRecognizer(sender: UIPanGestureRecognizer) {
+        let panGesture = sender.locationInView(view)
+        paddle.center = CGPointMake(panGesture.x, paddle.center.y)
+        dynamicAnimator.updateItemUsingCurrentState(paddle)
+    }
+    
+    
+    
+    @IBAction func startGameAction(sender: UIButton) {
+        
+        startButton.alpha = 0.0
+        
+        setupBehaviors()
+        
+        
+        
+        let pushBehavior = UIPushBehavior(items: startBallArray, mode: .Instantaneous)
+        pushBehavior.pushDirection = CGVectorMake(0.2, 1.0)
+        pushBehavior.magnitude = 0.25
         dynamicAnimator.addBehavior(pushBehavior)
-
+        
+        
         
     }
-    
-    @IBAction func paddleMovement(sender: UIPanGestureRecognizer) {
-    
-        
-        var translation = sender.translationInView(self.view)
-        sender.view!.center = CGPointMake(sender.view!.center.x + translation.x, sender.view!.center.y + translation.y)
-
-    }
-    
     func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item1: UIDynamicItem, withItem item2: UIDynamicItem, atPoint p: CGPoint)
     {
         //print(blocks)
 
         for block in blocks
         {
-           // print(block)
         }
 
         

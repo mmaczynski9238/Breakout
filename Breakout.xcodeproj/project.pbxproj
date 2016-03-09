@@ -196,7 +196,7 @@
 				TargetAttributes = {
 					DB0C9D111C8BD2AC004D1743 = {
 						CreatedOnToolsVersion = 7.2.1;
-						DevelopmentTeam = C3EL86XFP8;
+						DevelopmentTeam = QHE7KKX8KE;
 					};
 					DB0C9D251C8BD2AC004D1743 = {
 						CreatedOnToolsVersion = 7.2.1;
