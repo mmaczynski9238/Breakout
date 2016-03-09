@@ -69,7 +69,7 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
             var x:CGFloat = 0
             var y:CGFloat = 45
             
-            for _ in 1...4
+            for _ in 1...5
             {
                 for _ in 1...13
                 {
@@ -95,10 +95,10 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
         func setupBehaviors()
         {
 
-        let blockDynamicItemBehavior = UIDynamicItemBehavior(items: bothArray)
+        let blockDynamicItemBehavior = UIDynamicItemBehavior(items: blocks)
         blockDynamicItemBehavior.density = 1000000.0
         blockDynamicItemBehavior.elasticity = 1.0
-        blockDynamicItemBehavior.allowsRotation = false
+        blockDynamicItemBehavior.allowsRotation = true
         dynamicAnimator.addBehavior(blockDynamicItemBehavior)
         
             
@@ -147,9 +147,8 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
         
         let pushBehavior = UIPushBehavior(items: startBallArray, mode: .Instantaneous)
         pushBehavior.pushDirection = CGVectorMake(0.2, 1.0)
-        pushBehavior.magnitude = 0.25
+        pushBehavior.magnitude = 0.35
         dynamicAnimator.addBehavior(pushBehavior)
-        
         
         
     }
@@ -159,6 +158,14 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
 
         for block in blocks
         {
+            //print(block)
+//            
+//           // if item1 == block
+//            {
+//                print("hit")
+//                block.hidden = true
+//            }
+            
         }
 
         
