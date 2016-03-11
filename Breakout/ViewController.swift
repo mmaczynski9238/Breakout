@@ -158,13 +158,13 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
 
         for block in blocks
         {
-            //print(block)
-//            
-//           // if item1 == block
-//            {
-//                print("hit")
-//                block.hidden = true
-//            }
+            print(block)
+            
+            if item1.isEqual(ball) && item2.isEqual(block) || item1.isEqual(block) && item2.isEqual(ball)
+            {
+                print("hit")
+                block.hidden = true
+            }
             
         }
 
