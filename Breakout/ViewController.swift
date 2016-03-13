@@ -14,7 +14,9 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
     @IBOutlet var paddle: UIView!
     
     @IBOutlet var numberOfLivesLabel: UILabel!
-    var numberOfLives = 10
+    var numberOfLives = 5
+    
+    var blockCount = 0
     
     var dynamicAnimator = UIDynamicAnimator()
     var collisionBehavior = UICollisionBehavior()
@@ -44,10 +46,9 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
         
         dynamicAnimator = UIDynamicAnimator(referenceView: view)
         
+        initializeGame()
         
-        createBlocks()
-        createBall()
-        setupBehaviors()
+        numberOfLivesLabel.text = "Lives: \(numberOfLives)"
 
         
         allViews.append(paddle)
@@ -70,9 +71,9 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
     {
         
         var x:CGFloat = 0
-        var y:CGFloat = 45
+        var y:CGFloat = 50
         
-        for _ in 1...5
+        for _ in 1...6
         {
             for _ in 1...13
             {
@@ -120,12 +121,12 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
         
         for block in blocks
         {
-            collisionBehavior.addItem(block)
-            
+            //collisionBehavior.addItem(block)
+            print(blocks.count)
             if item1.isEqual(ball) && item2.isEqual(block) || item1.isEqual(block) && item2.isEqual(ball)
             {
                 
-//                
+                
 //                if block.backgroundColor == UIColor.blackColor()
 //                {
 //                    block.backgroundColor = UIColor.redColor()
@@ -136,11 +137,18 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
 //                }
 //                else if block.backgroundColor == UIColor.blueColor()
 //                {
-                
+//                
                 
                     block.removeFromSuperview()
+                
                     collisionBehavior.removeItem(block)
-                //}
+                    blockCount++
+                    
+                    if blockCount == 1
+                    {
+                        wonGame()
+                    }
+               // }
                 
                 
             }
@@ -148,16 +156,24 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
         
         
     }
-/*
+
 func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item: UIDynamicItem, withBoundaryIdentifier identifier: NSCopying?, atPoint p: CGPoint) {
-        if item.isEqual(ball) && p.y > paddle.center.y {
-            numberOfLives--
+        if item.isEqual(ball) && p.y > paddle.center.y 
+        {
             numberOfLivesLabel.text = "Lives: \(numberOfLives)"
-            
+    
+            numberOfLives--
+
+    
             if numberOfLives != 0
             {
-                dynamicAnimator.updateItemUsingCurrentState(ball)
-                ball.center = view.center
+                ball.removeFromSuperview()
+                collisionBehavior.removeItem(ball)
+                setupBehaviors()
+                //createBlocks()
+                createBall()
+                startButton.alpha = 1.0
+                
 
             }
             else
@@ -166,7 +182,7 @@ func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item: 
             }
             
         }
-    }*/
+    }
     /************************************/
 
        func setupBehaviors()
@@ -206,10 +222,6 @@ func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item: 
 
      /***********Game Functions**********/
 
-    
-    
-    
-    
     @IBAction func startGameAction(sender: UIButton) {
         
         startButton.alpha = 0.0
@@ -225,30 +237,76 @@ func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item: 
         
         
     }
-    func resetGame()
+    func initializeGame()
     {
         setupBehaviors()
         createBlocks()
         createBall()
         startButton.alpha = 1.0
+    }
+    func resetGame()
+    {
+        createBlocks()
 
+        setupBehaviors()
+        createBall()
+        
+        paddle.hidden = false
+        startButton.alpha = 1.0
+        //numberOfLives = 5
+        for block in blocks{
+            print(block)
+        }
+      
+    }
+    func wonGame()
+    {
+        ball.removeFromSuperview()
+        collisionBehavior.removeItem(ball)
+        dynamicAnimator.updateItemUsingCurrentState(ball)
+        
+        dynamicAnimator.updateItemUsingCurrentState(paddle)
+        
+        paddle.hidden = true
+        
+        for block in blocks
+        {
+            block.removeFromSuperview()
+            
+            collisionBehavior.removeItem(block)
+        }
+        
+        startButton.alpha = 0.0
+
+        
+        let alertView = UIAlertController(title: "You Won", message: "", preferredStyle: .Alert)
+        alertView.addAction(UIAlertAction(title: "Play Again", style: .Default, handler: { (alertAction) -> Void in
+            self.resetGame()
+        }))
+        //alertView.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+        presentViewController(alertView, animated: true, completion: nil)
+
+        
+        
     }
     func endGame()
     {
         ball.removeFromSuperview()
         collisionBehavior.removeItem(ball)
         dynamicAnimator.updateItemUsingCurrentState(ball)
+        
         dynamicAnimator.updateItemUsingCurrentState(paddle)
         
+        paddle.hidden = true
 
         for block in blocks
         {
-            block.removeFromSuperview()
+        block.removeFromSuperview()
         
         collisionBehavior.removeItem(block)
         }
     
-    
+        startButton.alpha = 0.0
         
         let alertView = UIAlertController(title: "Game Over", message: "You ran out of lives.", preferredStyle: .Alert)
         alertView.addAction(UIAlertAction(title: "Play Again", style: .Default, handler: { (alertAction) -> Void in
@@ -259,6 +317,8 @@ func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item: 
     }
     /************************************/
 
+   
+    
 }
 
 
