@@ -13,6 +13,8 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
     @IBOutlet var startButton: UIButton!
     @IBOutlet var paddle: UIView!
     
+    @IBOutlet var numberOfLivesLabel: UILabel!
+    var numberOfLives = 10
     
     var dynamicAnimator = UIDynamicAnimator()
     var collisionBehavior = UICollisionBehavior()
@@ -26,8 +28,6 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
     
     
     var ball:UIView!
-    
-    
     var blocks:[UIView] = []
     var startBallArray:[UIView] = []
     var allViews:[UIView] = []
@@ -36,32 +36,35 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
     
     
     
-    
+    /************************************/
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         dynamicAnimator = UIDynamicAnimator(referenceView: view)
         
+        
         createBlocks()
-        
-        ball = UIView(frame: CGRectMake(300, 300, 20, 20))
-        ball.backgroundColor = UIColor.redColor()
-        view.addSubview(ball)
-        ball.layer.cornerRadius = ball.frame.size.width/2
-        ball.clipsToBounds = true
-        startBallArray.append(ball)
-        allViews.append(ball)
-        //ball.hidden = true
-        
+        createBall()
+        setupBehaviors()
+
         
         allViews.append(paddle)
         bothArray.append(paddle)
         paddleArray.append(paddle)
         
-        setupBehaviors()
         
     }
+    /************************************/
+
+    @IBAction func gestureRecognizer(sender: UIPanGestureRecognizer) {
+        let panGesture = sender.locationInView(view)
+        paddle.center = CGPointMake(panGesture.x, paddle.center.y)
+        dynamicAnimator.updateItemUsingCurrentState(paddle)
+    }
+    
+    /************Create UIViews***********/
     
     func createBlocks()
     {
@@ -80,6 +83,7 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
                 blocks.append(block)
                 allViews.append(block)
                 bothArray.append(block)
+                collisionBehavior.addItem(block)
                 
                 x += 60
             }
@@ -87,12 +91,85 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
             y += 30
         }
         
+        allViews.append(paddle)
+        bothArray.append(paddle)
+        paddleArray.append(paddle)
+        
+
         
     }
     
+    func createBall()
+    {
+        ball = UIView(frame: CGRectMake(300, 300, 20, 20))
+        ball.backgroundColor = UIColor.redColor()
+        view.addSubview(ball)
+        ball.layer.cornerRadius = ball.frame.size.width/2
+        ball.clipsToBounds = true
+        startBallArray.append(ball)
+        allViews.append(ball)
+    }
+    /************************************/
+
+    /*********Collision Functions********/
+
     
-    
-    func setupBehaviors()
+    func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item1: UIDynamicItem, withItem item2: UIDynamicItem, atPoint p: CGPoint)
+    {
+        
+        
+        for block in blocks
+        {
+            collisionBehavior.addItem(block)
+            
+            if item1.isEqual(ball) && item2.isEqual(block) || item1.isEqual(block) && item2.isEqual(ball)
+            {
+                
+//                
+//                if block.backgroundColor == UIColor.blackColor()
+//                {
+//                    block.backgroundColor = UIColor.redColor()
+//                }
+//                else if block.backgroundColor == UIColor.redColor()
+//                {
+//                block.backgroundColor = UIColor.blueColor()
+//                }
+//                else if block.backgroundColor == UIColor.blueColor()
+//                {
+                
+                
+                    block.removeFromSuperview()
+                    collisionBehavior.removeItem(block)
+                //}
+                
+                
+            }
+        }
+        
+        
+    }
+/*
+func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item: UIDynamicItem, withBoundaryIdentifier identifier: NSCopying?, atPoint p: CGPoint) {
+        if item.isEqual(ball) && p.y > paddle.center.y {
+            numberOfLives--
+            numberOfLivesLabel.text = "Lives: \(numberOfLives)"
+            
+            if numberOfLives != 0
+            {
+                dynamicAnimator.updateItemUsingCurrentState(ball)
+                ball.center = view.center
+
+            }
+            else
+            {
+                endGame()
+            }
+            
+        }
+    }*/
+    /************************************/
+
+       func setupBehaviors()
     {
         
         let blockDynamicItemBehavior = UIDynamicItemBehavior(items: blocks)
@@ -125,15 +202,11 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
         dynamicAnimator.addBehavior(collisionBehavior)
         
     }
+    /************************************/
+
+     /***********Game Functions**********/
+
     
-    
-    
-    
-    @IBAction func gestureRecognizer(sender: UIPanGestureRecognizer) {
-        let panGesture = sender.locationInView(view)
-        paddle.center = CGPointMake(panGesture.x, paddle.center.y)
-        dynamicAnimator.updateItemUsingCurrentState(paddle)
-    }
     
     
     
@@ -146,49 +219,46 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
         
         
         let pushBehavior = UIPushBehavior(items: startBallArray, mode: .Instantaneous)
-        pushBehavior.pushDirection = CGVectorMake(0.2, 1.0)
+        pushBehavior.pushDirection = CGVectorMake(0.7, 1.0)
         pushBehavior.magnitude = 0.35
         dynamicAnimator.addBehavior(pushBehavior)
         
         
     }
-    func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item1: UIDynamicItem, withItem item2: UIDynamicItem, atPoint p: CGPoint)
+    func resetGame()
     {
-        //print(blocks)
+        setupBehaviors()
+        createBlocks()
+        createBall()
+        startButton.alpha = 1.0
+
+    }
+    func endGame()
+    {
+        ball.removeFromSuperview()
+        collisionBehavior.removeItem(ball)
+        dynamicAnimator.updateItemUsingCurrentState(ball)
+        dynamicAnimator.updateItemUsingCurrentState(paddle)
         
-        
+
         for block in blocks
         {
-            
-            // print(block)
-            
-            
-            if item1.isEqual(ball) && item2.isEqual(block) || item1.isEqual(block) && item2.isEqual(ball)
-            {
-                print("hit")
-                block.removeFromSuperview()
-                collisionBehavior.removeItem(block)
-            }
-            
-            
-            
-            
-            
-            
-            
-            
-            //            if block.backgroundColor == UIColor.blackColor()
-            //            {
-            //                block.backgroundColor = UIColor.grayColor()
-            //            }
-            
+            block.removeFromSuperview()
+        
+        collisionBehavior.removeItem(block)
         }
+    
+    
         
-        
+        let alertView = UIAlertController(title: "Game Over", message: "You ran out of lives.", preferredStyle: .Alert)
+        alertView.addAction(UIAlertAction(title: "Play Again", style: .Default, handler: { (alertAction) -> Void in
+            self.resetGame()
+        }))
+        //alertView.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+        presentViewController(alertView, animated: true, completion: nil)
     }
-    
-    
-    
+    /************************************/
+
 }
 
 
