@@ -10,40 +10,35 @@ import UIKit
 import Foundation
 
 public extension UIView {
-    
-    /**
-     Fade in a view with a duration
-     
-     - parameter duration: custom animation duration
-     */
     func fadeIn(duration duration: NSTimeInterval = 1.0) {
         UIView.animateWithDuration(duration, animations: {
             self.alpha = 1.0
         })
     }
-    
-    /**
-     Fade out a view with a duration
-     
-     - parameter duration: custom animation duration
-     */
     func fadeOut(duration duration: NSTimeInterval = 1.0) {
-        UIView.animateWithDuration(duration, animations: {
-            self.alpha = 0.0
+    UIView.animateWithDuration(duration, animations: {
+        self.alpha = 0.0
         })
     }
+}
+
+
+
+func getRandomColor() -> UIColor{
+    
+    var randomRed:CGFloat = CGFloat(drand48())
+    
+    var randomGreen:CGFloat = CGFloat(drand48())
+    
+    var randomBlue:CGFloat = CGFloat(drand48())
+    
+    return UIColor(red: randomRed, green: randomGreen, blue: randomBlue, alpha: 1.0)
     
 }
 
 
+
 class ViewController: UIViewController, UICollisionBehaviorDelegate {
-    
-    
-    
-    
-    
-    
-    
     
     @IBOutlet var scorePlusLabel: UILabel!
     @IBOutlet var startButton: UIButton!
@@ -52,6 +47,7 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
     @IBOutlet var numberOfLivesLabel: UILabel!
     @IBOutlet weak var livesLabelOutlet: UILabel!
     var numberOfLives = 5
+    
     @IBOutlet var scoreLabel: UILabel!
     var score = 0
     var blockCount = 0
@@ -66,7 +62,6 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
     
     //height of block
     let hob:CGFloat = 15.0
-    
     
     var ball:UIView!
     var blocks:[UIView] = []
@@ -113,16 +108,13 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
         UIView.animateWithDuration(0.3, animations:{
             self.paddle.frame = CGRectMake(self.paddle.frame.origin.x - 50, self.paddle.frame.origin.y, self.paddle.frame.size.width, self.paddle.frame.size.height)
         })
-
     }
     
     @IBAction func moveRight(sender: UIButton) {
         
-        
-        UIView.animateWithDuration(0.3, animations:{
+                UIView.animateWithDuration(0.3, animations:{
             self.paddle.frame = CGRectMake(self.paddle.frame.origin.x + 50, self.paddle.frame.origin.y, self.paddle.frame.size.width, self.paddle.frame.size.height)
         })
-
     }
     
     
@@ -160,7 +152,8 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
 
         
     }
-    
+    /************************************/
+
     func createBall()
     {
         ball = UIView(frame: CGRectMake(300, 300, 20, 20))
@@ -178,55 +171,47 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
     
     func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item1: UIDynamicItem, withItem item2: UIDynamicItem, atPoint p: CGPoint)
     {
-//        if item1.isEqual(ball) && item2.isEqual(paddle) || item1.isEqual(paddle) && item2.isEqual(ball)
-//        {
-//            pushBehavior = UIPushBehavior(items: startBallArray, mode: .Instantaneous)
-//            pushBehavior.pushDirection = CGVectorMake(0.8, 0.9)
-//            pushBehavior.magnitude = 0.2
-//            dynamicAnimator.addBehavior(pushBehavior)
-//            
-//            
-//        }
+       
         for block in blocks
         {
             print(blocks.count)
             if item1.isEqual(ball) && item2.isEqual(block) || item1.isEqual(block) && item2.isEqual(ball)
             {
                 
-//                
-//                if block.backgroundColor == UIColor.blackColor()
-//                {
-//                    block.backgroundColor = UIColor.greenColor()
-//                    score += 1
-//                    scorePlusLabel.text = "+1"
-//                    scorePlusLabel.textColor = UIColor.blackColor()
-//                    scorePlusLabel.alpha = 0.0
-//                    scorePlusLabel.fadeIn(duration: 0.1)
-//                    scorePlusLabel.fadeOut(duration: 0.3)
-//
-//                }
-//                else if block.backgroundColor == UIColor.greenColor()
-//                {
-//                block.backgroundColor = UIColor.redColor()
-//                    
-//                    score += 5
-//                    scorePlusLabel.text = "+5"
-//                    scorePlusLabel.textColor = UIColor.blackColor()
-//                    scorePlusLabel.alpha = 0.0
-//                    scorePlusLabel.fadeIn(duration: 0.1)
-//                    scorePlusLabel.fadeOut(duration: 0.3)
-//                    
-//                }
-//                else if block.backgroundColor == UIColor.redColor()
-//                {
-//                
+                
+                if block.backgroundColor == UIColor.blackColor()
+                {
+                    block.backgroundColor = UIColor.greenColor()
+                    score += 1
+                    scorePlusLabel.text = "+1"
+                    scorePlusLabel.textColor = UIColor.blackColor()
+                    scorePlusLabel.alpha = 0.0
+                    scorePlusLabel.fadeIn(duration: 0.1)
+                    scorePlusLabel.fadeOut(duration: 0.3)
+
+                }
+                else if block.backgroundColor == UIColor.greenColor()
+                {
+                block.backgroundColor = UIColor.redColor()
+                    
+                    score += 5
+                    scorePlusLabel.text = "+5"
+                    scorePlusLabel.textColor = UIColor.blackColor()
+                    scorePlusLabel.alpha = 0.0
+                    scorePlusLabel.fadeIn(duration: 0.1)
+                    scorePlusLabel.fadeOut(duration: 0.3)
+
+                }
+                else if block.backgroundColor == UIColor.redColor()
+                {
+                
                     score += 10
                     scorePlusLabel.text = "+10"
                     scorePlusLabel.textColor = UIColor.blackColor()
                     scorePlusLabel.alpha = 0.0
                     scorePlusLabel.fadeIn(duration: 0.1)
                     scorePlusLabel.fadeOut(duration: 0.3)
-                
+
                 
 
                     block.removeFromSuperview()
@@ -235,7 +220,7 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
                     blockCount++
                     
                 
-                //}
+                }
             
                 if blockCount == 65
                 {
@@ -249,7 +234,22 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
         }
         
         
+        if item1.isEqual(ball) && item2.isEqual(paddle) || item1.isEqual(paddle) && item2.isEqual(ball)
+        {
+            //            pushBehavior = UIPushBehavior(items: startBallArray, mode: .Instantaneous)
+            //            pushBehavior.pushDirection = CGVectorMake(0.8, 0.9)
+            //            pushBehavior.magnitude = 0.2
+            //            dynamicAnimator.addBehavior(pushBehavior)
+            
+            
+            paddle.backgroundColor = getRandomColor()
+            
+        }
+        
+        
     }
+    /************************************/
+    /************************************/
 
 func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item: UIDynamicItem, withBoundaryIdentifier identifier: NSCopying?, atPoint p: CGPoint) {
         if item.isEqual(ball) && p.y > paddle.center.y 
@@ -354,8 +354,10 @@ func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item: 
         livesLabelOutlet.alpha = 0.0
         scoreLabel.alpha = 0.0
     }
+    /************************************/
+
     func wonGame()
-        {
+    {
             ball.removeFromSuperview()
             collisionBehavior.removeItem(ball)
             dynamicAnimator.updateItemUsingCurrentState(ball)
@@ -384,7 +386,8 @@ func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item: 
     
     
     
-        }
+    }
+    /************************************/
 
     func endGame()
     {
