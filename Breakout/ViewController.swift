@@ -17,7 +17,8 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
     @IBOutlet var numberOfLivesLabel: UILabel!
     @IBOutlet weak var livesLabelOutlet: UILabel!
     var numberOfLives = 5
-    
+    @IBOutlet var scoreLabel: UILabel!
+    var score = 0
     var blockCount = 0
     
     var dynamicAnimator = UIDynamicAnimator()
@@ -133,15 +134,18 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
                 if block.backgroundColor == UIColor.blackColor()
                 {
                     block.backgroundColor = UIColor.greenColor()
+                    score += 1
                 }
                 else if block.backgroundColor == UIColor.greenColor()
                 {
                 block.backgroundColor = UIColor.redColor()
+                score += 5
                 }
                 else if block.backgroundColor == UIColor.redColor()
                 {
                 
-                
+                    score += 10
+                    
                     block.removeFromSuperview()
                 
                     collisionBehavior.removeItem(block)
@@ -154,6 +158,10 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
                 {
                     wonGame()
                 }
+                
+                
+                scoreLabel.text = "Score: \(score)"
+
             }
         }
         
@@ -176,6 +184,9 @@ func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item: 
                 setupBehaviors()
                 createBall()
                 startButton.alpha = 1.0
+                score -= 5
+                
+                scoreLabel.text = "Score: \(score)"
                 
 
             }
@@ -233,6 +244,7 @@ func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item: 
         
 
         livesLabelOutlet.alpha = 1.0
+        scoreLabel.alpha = 1.0
         
         let pushBehavior = UIPushBehavior(items: startBallArray, mode: .Instantaneous)
         pushBehavior.pushDirection = CGVectorMake(0.2, 1.0)
@@ -248,6 +260,7 @@ func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item: 
         createBall()
         startButton.alpha = 1.0
         livesLabelOutlet.alpha = 0.0
+        scoreLabel.alpha = 0.0
     }
     func wonGame()
         {
@@ -267,7 +280,9 @@ func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item: 
             }
     
             startButton.alpha = 0.0
-    
+            scoreLabel.alpha = 0.0
+            livesLabelOutlet.alpha = 0.0
+
     
             let alertView = UIAlertController(title: "You Won", message: "", preferredStyle: .Alert)
             alertView.addAction(UIAlertAction(title: "Exit", style: .Default, handler: { (alertAction) -> Void in
@@ -297,6 +312,9 @@ func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item: 
         }
     
         startButton.alpha = 0.0
+        scoreLabel.alpha = 0.0
+        livesLabelOutlet.alpha = 0.0
+        
         
         let alertView = UIAlertController(title: "Game Over", message: "You ran out of lives.", preferredStyle: .Alert)
         alertView.addAction(UIAlertAction(title: "Exit", style: .Default, handler: { (alertAction) -> Void in
