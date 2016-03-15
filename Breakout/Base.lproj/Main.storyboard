@@ -53,6 +53,12 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Era-dr-Nnl">
+                                <rect key="frame" x="636" y="877" width="132" height="101"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="60"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
@@ -63,6 +69,7 @@
                         <outlet property="numberOfLivesLabel" destination="9L3-VW-yiR" id="UCb-Tr-pgz"/>
                         <outlet property="paddle" destination="CpF-ha-QJf" id="3DJ-Cc-2La"/>
                         <outlet property="scoreLabel" destination="1Kp-uN-rq6" id="saV-J2-gg8"/>
+                        <outlet property="scorePlusLabel" destination="Era-dr-Nnl" id="Utc-oT-AeQ"/>
                         <outlet property="startButton" destination="ksE-ZF-KHZ" id="gME-tv-jVz"/>
                     </connections>
                 </viewController>

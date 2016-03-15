@@ -9,8 +9,43 @@
 import UIKit
 import Foundation
 
+public extension UIView {
+    
+    /**
+     Fade in a view with a duration
+     
+     - parameter duration: custom animation duration
+     */
+    func fadeIn(duration duration: NSTimeInterval = 1.0) {
+        UIView.animateWithDuration(duration, animations: {
+            self.alpha = 1.0
+        })
+    }
+    
+    /**
+     Fade out a view with a duration
+     
+     - parameter duration: custom animation duration
+     */
+    func fadeOut(duration duration: NSTimeInterval = 1.0) {
+        UIView.animateWithDuration(duration, animations: {
+            self.alpha = 0.0
+        })
+    }
+    
+}
+
+
 class ViewController: UIViewController, UICollisionBehaviorDelegate {
     
+    
+    
+    
+    
+    
+    
+    
+    @IBOutlet var scorePlusLabel: UILabel!
     @IBOutlet var startButton: UIButton!
     @IBOutlet var paddle: UIView!
     
@@ -23,6 +58,7 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
     
     var dynamicAnimator = UIDynamicAnimator()
     var collisionBehavior = UICollisionBehavior()
+    var pushBehavior = UIPushBehavior()
     
     
     //length of block
@@ -55,10 +91,13 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
 
         numberOfLives = 5
 
+        scorePlusLabel.alpha = 0.0
+
         
         allViews.append(paddle)
         bothArray.append(paddle)
         paddleArray.append(paddle)
+        
         
         
     }
@@ -122,8 +161,15 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
     
     func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item1: UIDynamicItem, withItem item2: UIDynamicItem, atPoint p: CGPoint)
     {
-        
-        
+//        if item1.isEqual(ball) && item2.isEqual(paddle) || item1.isEqual(paddle) && item2.isEqual(ball)
+//        {
+//            pushBehavior = UIPushBehavior(items: startBallArray, mode: .Instantaneous)
+//            pushBehavior.pushDirection = CGVectorMake(0.8, 0.9)
+//            pushBehavior.magnitude = 0.2
+//            dynamicAnimator.addBehavior(pushBehavior)
+//            
+//            
+//        }
         for block in blocks
         {
             print(blocks.count)
@@ -135,20 +181,38 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
                 {
                     block.backgroundColor = UIColor.greenColor()
                     score += 1
+                    scorePlusLabel.text = "+1"
+                    scorePlusLabel.textColor = UIColor.blackColor()
+                    scorePlusLabel.alpha = 0.0
+                    scorePlusLabel.fadeIn(duration: 0.1)
+                    scorePlusLabel.fadeOut(duration: 0.3)
+
                 }
                 else if block.backgroundColor == UIColor.greenColor()
                 {
                 block.backgroundColor = UIColor.redColor()
-                score += 5
+                    
+                    score += 5
+                    scorePlusLabel.text = "+5"
+                    scorePlusLabel.textColor = UIColor.blackColor()
+                    scorePlusLabel.alpha = 0.0
+                    scorePlusLabel.fadeIn(duration: 0.1)
+                    scorePlusLabel.fadeOut(duration: 0.3)
+                    
                 }
                 else if block.backgroundColor == UIColor.redColor()
                 {
                 
                     score += 10
+                    scorePlusLabel.text = "+10"
+                    scorePlusLabel.textColor = UIColor.blackColor()
+                    scorePlusLabel.alpha = 0.0
+                    scorePlusLabel.fadeIn(duration: 0.1)
+                    scorePlusLabel.fadeOut(duration: 0.3)
                     
                     block.removeFromSuperview()
-                
                     collisionBehavior.removeItem(block)
+                    
                     blockCount++
                     
                 
@@ -185,6 +249,11 @@ func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item: 
                 createBall()
                 startButton.alpha = 1.0
                 score -= 5
+                scorePlusLabel.text = "-5"
+                scorePlusLabel.textColor = UIColor.redColor()
+                scorePlusLabel.alpha = 0.0
+                scorePlusLabel.fadeIn(duration: 0.1)
+                scorePlusLabel.fadeOut(duration: 0.3)
                 
                 scoreLabel.text = "Score: \(score)"
                 
@@ -246,7 +315,7 @@ func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item: 
         livesLabelOutlet.alpha = 1.0
         scoreLabel.alpha = 1.0
         
-        let pushBehavior = UIPushBehavior(items: startBallArray, mode: .Instantaneous)
+        pushBehavior = UIPushBehavior(items: startBallArray, mode: .Instantaneous)
         pushBehavior.pushDirection = CGVectorMake(0.2, 1.0)
         pushBehavior.magnitude = 0.35
         dynamicAnimator.addBehavior(pushBehavior)
@@ -318,10 +387,8 @@ func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item: 
         
         let alertView = UIAlertController(title: "Game Over", message: "You ran out of lives.", preferredStyle: .Alert)
         alertView.addAction(UIAlertAction(title: "Exit", style: .Default, handler: { (alertAction) -> Void in
-           // self.resetGame()
             exit(0)
         }))
-        //alertView.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
         presentViewController(alertView, animated: true, completion: nil)
     }
     /************************************/
