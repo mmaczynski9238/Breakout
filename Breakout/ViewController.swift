@@ -109,6 +109,23 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
         dynamicAnimator.updateItemUsingCurrentState(paddle)
     }
     
+    @IBAction func moveLeft(sender: UIButton) {
+        UIView.animateWithDuration(0.3, animations:{
+            self.paddle.frame = CGRectMake(self.paddle.frame.origin.x - 50, self.paddle.frame.origin.y, self.paddle.frame.size.width, self.paddle.frame.size.height)
+        })
+
+    }
+    
+    @IBAction func moveRight(sender: UIButton) {
+        
+        
+        UIView.animateWithDuration(0.3, animations:{
+            self.paddle.frame = CGRectMake(self.paddle.frame.origin.x + 50, self.paddle.frame.origin.y, self.paddle.frame.size.width, self.paddle.frame.size.height)
+        })
+
+    }
+    
+    
     /************Create UIViews***********/
     
     func createBlocks()
@@ -176,47 +193,49 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
             if item1.isEqual(ball) && item2.isEqual(block) || item1.isEqual(block) && item2.isEqual(ball)
             {
                 
-                
-                if block.backgroundColor == UIColor.blackColor()
-                {
-                    block.backgroundColor = UIColor.greenColor()
-                    score += 1
-                    scorePlusLabel.text = "+1"
-                    scorePlusLabel.textColor = UIColor.blackColor()
-                    scorePlusLabel.alpha = 0.0
-                    scorePlusLabel.fadeIn(duration: 0.1)
-                    scorePlusLabel.fadeOut(duration: 0.3)
-
-                }
-                else if block.backgroundColor == UIColor.greenColor()
-                {
-                block.backgroundColor = UIColor.redColor()
-                    
-                    score += 5
-                    scorePlusLabel.text = "+5"
-                    scorePlusLabel.textColor = UIColor.blackColor()
-                    scorePlusLabel.alpha = 0.0
-                    scorePlusLabel.fadeIn(duration: 0.1)
-                    scorePlusLabel.fadeOut(duration: 0.3)
-                    
-                }
-                else if block.backgroundColor == UIColor.redColor()
-                {
-                
+//                
+//                if block.backgroundColor == UIColor.blackColor()
+//                {
+//                    block.backgroundColor = UIColor.greenColor()
+//                    score += 1
+//                    scorePlusLabel.text = "+1"
+//                    scorePlusLabel.textColor = UIColor.blackColor()
+//                    scorePlusLabel.alpha = 0.0
+//                    scorePlusLabel.fadeIn(duration: 0.1)
+//                    scorePlusLabel.fadeOut(duration: 0.3)
+//
+//                }
+//                else if block.backgroundColor == UIColor.greenColor()
+//                {
+//                block.backgroundColor = UIColor.redColor()
+//                    
+//                    score += 5
+//                    scorePlusLabel.text = "+5"
+//                    scorePlusLabel.textColor = UIColor.blackColor()
+//                    scorePlusLabel.alpha = 0.0
+//                    scorePlusLabel.fadeIn(duration: 0.1)
+//                    scorePlusLabel.fadeOut(duration: 0.3)
+//                    
+//                }
+//                else if block.backgroundColor == UIColor.redColor()
+//                {
+//                
                     score += 10
                     scorePlusLabel.text = "+10"
                     scorePlusLabel.textColor = UIColor.blackColor()
                     scorePlusLabel.alpha = 0.0
                     scorePlusLabel.fadeIn(duration: 0.1)
                     scorePlusLabel.fadeOut(duration: 0.3)
-                    
+                
+                
+
                     block.removeFromSuperview()
                     collisionBehavior.removeItem(block)
                     
                     blockCount++
                     
                 
-                }
+                //}
             
                 if blockCount == 65
                 {
@@ -288,7 +307,7 @@ func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item: 
         
         let paddleDynamicBehavior = UIDynamicItemBehavior(items: paddleArray)
         paddleDynamicBehavior.density = 1000
-        paddleDynamicBehavior.resistance = 100
+        //paddleDynamicBehavior.resistance = 100
         paddleDynamicBehavior.allowsRotation = false
         dynamicAnimator.addBehavior(paddleDynamicBehavior)
         
@@ -305,6 +324,10 @@ func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item: 
 
      /***********Game Functions**********/
 
+    
+    
+    
+    
     @IBAction func startGameAction(sender: UIButton) {
         
         startButton.alpha = 0.0
