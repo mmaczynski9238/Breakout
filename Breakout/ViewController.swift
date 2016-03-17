@@ -44,9 +44,6 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
     @IBOutlet var startButton: UIButton!
     @IBOutlet var paddle: UIView!
     
-    @IBOutlet var numberOfLivesLabel: UILabel!
-    @IBOutlet weak var livesLabelOutlet: UILabel!
-    var numberOfLives = 5
     
     @IBOutlet var scoreLabel: UILabel!
     var score = 0
@@ -82,9 +79,6 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
         
         initializeGame()
         
-        numberOfLivesLabel.text = "Lives: \(numberOfLives)"
-
-        numberOfLives = 5
 
         scorePlusLabel.alpha = 0.0
 
@@ -222,7 +216,7 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
                 
                 }
             
-                if blockCount == 65
+                if blockCount == 1
                 {
                     wonGame()
                 }
@@ -233,21 +227,7 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
             }
         }
         
-        
-        if item1.isEqual(ball) && item2.isEqual(paddle) || item1.isEqual(paddle) && item2.isEqual(ball)
-        {
-            //            pushBehavior = UIPushBehavior(items: startBallArray, mode: .Instantaneous)
-            //            pushBehavior.pushDirection = CGVectorMake(0.8, 0.9)
-            //            pushBehavior.magnitude = 0.2
-            //            dynamicAnimator.addBehavior(pushBehavior)
-            
-            
-            paddle.backgroundColor = getRandomColor()
-            
-        }
-        
-        
-    }
+       }
     /************************************/
     /************************************/
 
@@ -255,33 +235,10 @@ func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item: 
         if item.isEqual(ball) && p.y > paddle.center.y 
         {
 
+        endGame()
+        
             
-            numberOfLives--
-            numberOfLivesLabel.text = "Lives: \(numberOfLives)"
-
-    
-            if numberOfLives != 0
-            {
-                ball.removeFromSuperview()
-                collisionBehavior.removeItem(ball)
-                setupBehaviors()
-                createBall()
-                startButton.alpha = 1.0
-                score -= 5
-                scorePlusLabel.text = "-5"
-                scorePlusLabel.textColor = UIColor.redColor()
-                scorePlusLabel.alpha = 0.0
-                scorePlusLabel.fadeIn(duration: 0.1)
-                scorePlusLabel.fadeOut(duration: 0.3)
-                
-                scoreLabel.text = "Score: \(score)"
-                
-
-            }
-            else
-            {
-                endGame()
-            }
+           
             
         }
     }
@@ -335,7 +292,6 @@ func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item: 
         setupBehaviors()
         
 
-        livesLabelOutlet.alpha = 1.0
         scoreLabel.alpha = 1.0
         
         pushBehavior = UIPushBehavior(items: startBallArray, mode: .Instantaneous)
@@ -351,7 +307,6 @@ func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item: 
         createBlocks()
         createBall()
         startButton.alpha = 1.0
-        livesLabelOutlet.alpha = 0.0
         scoreLabel.alpha = 0.0
     }
     /************************************/
@@ -375,7 +330,6 @@ func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item: 
     
             startButton.alpha = 0.0
             scoreLabel.alpha = 0.0
-            livesLabelOutlet.alpha = 0.0
 
     
             let alertView = UIAlertController(title: "You Won", message: "", preferredStyle: .Alert)
@@ -408,10 +362,9 @@ func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item: 
     
         startButton.alpha = 0.0
         scoreLabel.alpha = 0.0
-        livesLabelOutlet.alpha = 0.0
         
         
-        let alertView = UIAlertController(title: "Game Over", message: "You ran out of lives.", preferredStyle: .Alert)
+        let alertView = UIAlertController(title: "Game Over", message: nil, preferredStyle: .Alert)
         alertView.addAction(UIAlertAction(title: "Exit", style: .Default, handler: { (alertAction) -> Void in
             exit(0)
         }))
