@@ -40,12 +40,14 @@ func getRandomColor() -> UIColor{
 
 class ViewController: UIViewController, UICollisionBehaviorDelegate {
     
+    @IBOutlet weak var livesLabel: UILabel!
     @IBOutlet var scorePlusLabel: UILabel!
     @IBOutlet var startButton: UIButton!
     @IBOutlet var paddle: UIView!
     
     
     @IBOutlet var scoreLabel: UILabel!
+    var lives = 5
     var score = 0
     var blockCount = 0
     
@@ -216,7 +218,7 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
                 
                 }
             
-                if blockCount == 1
+                if blockCount == 65
                 {
                     wonGame()
                 }
@@ -234,9 +236,12 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
 func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item: UIDynamicItem, withBoundaryIdentifier identifier: NSCopying?, atPoint p: CGPoint) {
         if item.isEqual(ball) && p.y > paddle.center.y 
         {
-
+        resetGame()
+        //lives--
+        if lives == 0
+        {
         endGame()
-        
+            }
             
            
             
@@ -264,7 +269,6 @@ func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item: 
         
         let paddleDynamicBehavior = UIDynamicItemBehavior(items: paddleArray)
         paddleDynamicBehavior.density = 1000
-        //paddleDynamicBehavior.resistance = 100
         paddleDynamicBehavior.allowsRotation = false
         dynamicAnimator.addBehavior(paddleDynamicBehavior)
         
@@ -370,6 +374,22 @@ func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item: 
         }))
         presentViewController(alertView, animated: true, completion: nil)
     }
+    
+    
+    func resetGame()
+    {
+        lives--
+        ball.removeFromSuperview()
+        collisionBehavior.removeItem(ball)
+        dynamicAnimator.updateItemUsingCurrentState(ball)
+        
+        dynamicAnimator.updateItemUsingCurrentState(paddle)
+        
+        createBall()
+        startButton.alpha = 1.0
+        livesLabel.text = "Lives: \(lives)"
+    }
+    
     /************************************/
 
    
