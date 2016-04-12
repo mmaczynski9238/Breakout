@@ -26,11 +26,11 @@ public extension UIView {
 
 func getRandomColor() -> UIColor{
     
-    var randomRed:CGFloat = CGFloat(drand48())
+    let randomRed:CGFloat = CGFloat(drand48())
     
-    var randomGreen:CGFloat = CGFloat(drand48())
+    let randomGreen:CGFloat = CGFloat(drand48())
     
-    var randomBlue:CGFloat = CGFloat(drand48())
+    let randomBlue:CGFloat = CGFloat(drand48())
     
     return UIColor(red: randomRed, green: randomGreen, blue: randomBlue, alpha: 1.0)
     
@@ -69,27 +69,21 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
     var bothArray:[UIView] = []
     var paddleArray:[UIView] = []
     
-    
-    
     /************************************/
 
-    
-    override func viewDidLoad() {
+    override func viewDidLoad()
+    {
         super.viewDidLoad()
         
         dynamicAnimator = UIDynamicAnimator(referenceView: view)
         
         initializeGame()
-        
 
         scorePlusLabel.alpha = 0.0
 
-        
         allViews.append(paddle)
         bothArray.append(paddle)
         paddleArray.append(paddle)
-        
-        
         
     }
     /************************************/
@@ -99,20 +93,6 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
         paddle.center = CGPointMake(panGesture.x, paddle.center.y)
         dynamicAnimator.updateItemUsingCurrentState(paddle)
     }
-    
-    @IBAction func moveLeft(sender: UIButton) {
-        UIView.animateWithDuration(0.3, animations:{
-            self.paddle.frame = CGRectMake(self.paddle.frame.origin.x - 50, self.paddle.frame.origin.y, self.paddle.frame.size.width, self.paddle.frame.size.height)
-        })
-    }
-    
-    @IBAction func moveRight(sender: UIButton) {
-        
-                UIView.animateWithDuration(0.3, animations:{
-            self.paddle.frame = CGRectMake(self.paddle.frame.origin.x + 50, self.paddle.frame.origin.y, self.paddle.frame.size.width, self.paddle.frame.size.height)
-        })
-    }
-    
     
     /************Create UIViews***********/
     
@@ -184,7 +164,6 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
                     scorePlusLabel.alpha = 0.0
                     scorePlusLabel.fadeIn(duration: 0.1)
                     scorePlusLabel.fadeOut(duration: 0.3)
-
                 }
                 else if block.backgroundColor == UIColor.greenColor()
                 {
@@ -213,7 +192,7 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
                     block.removeFromSuperview()
                     collisionBehavior.removeItem(block)
                     
-                    blockCount++
+                    blockCount += 1
                     
                 
                 }
@@ -237,11 +216,13 @@ func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item: 
         if item.isEqual(ball) && p.y > paddle.center.y 
         {
         resetGame()
-        //lives--
+        lives -= 1
+        livesLabel.text = "Lives: \(lives)"
+
         if lives == 0
         {
         endGame()
-            }
+        }
             
            
             
@@ -251,35 +232,7 @@ func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item: 
 
        func setupBehaviors()
     {
-        
-        let blockDynamicItemBehavior = UIDynamicItemBehavior(items: blocks)
-        blockDynamicItemBehavior.density = 1000000.0
-        blockDynamicItemBehavior.elasticity = 1.0
-        blockDynamicItemBehavior.allowsRotation = true
-        dynamicAnimator.addBehavior(blockDynamicItemBehavior)
-        
-        
-        let ballDynamicBehavior = UIDynamicItemBehavior(items: startBallArray)
-        ballDynamicBehavior.friction = 0
-        ballDynamicBehavior.resistance = 0
-        ballDynamicBehavior.elasticity = 1.0
-        ballDynamicBehavior.allowsRotation = false
-        dynamicAnimator.addBehavior(ballDynamicBehavior)
-        
-        
-        let paddleDynamicBehavior = UIDynamicItemBehavior(items: paddleArray)
-        paddleDynamicBehavior.density = 1000
-        paddleDynamicBehavior.allowsRotation = false
-        dynamicAnimator.addBehavior(paddleDynamicBehavior)
-        
-        
-        
-        collisionBehavior = UICollisionBehavior(items: allViews)
-        collisionBehavior.translatesReferenceBoundsIntoBoundary = true
-        collisionBehavior.collisionMode = .Everything
-        collisionBehavior.collisionDelegate = self
-        dynamicAnimator.addBehavior(collisionBehavior)
-        
+               
     }
     /************************************/
 
@@ -378,7 +331,7 @@ func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item: 
     
     func resetGame()
     {
-        lives--
+        lives - 1
         ball.removeFromSuperview()
         collisionBehavior.removeItem(ball)
         dynamicAnimator.updateItemUsingCurrentState(ball)
