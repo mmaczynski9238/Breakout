@@ -12,31 +12,10 @@ import Foundation
 public extension UIView {
     func fadeIn(duration duration: NSTimeInterval = 1.0) {
         UIView.animateWithDuration(duration, animations: {
-            self.alpha = 1.0
-        })
-    }
+            self.alpha = 1.0})}
     func fadeOut(duration duration: NSTimeInterval = 1.0) {
     UIView.animateWithDuration(duration, animations: {
-        self.alpha = 0.0
-        })
-    }
-}
-
-
-
-func getRandomColor() -> UIColor{
-    
-    let randomRed:CGFloat = CGFloat(drand48())
-    
-    let randomGreen:CGFloat = CGFloat(drand48())
-    
-    let randomBlue:CGFloat = CGFloat(drand48())
-    
-    return UIColor(red: randomRed, green: randomGreen, blue: randomBlue, alpha: 1.0)
-    
-}
-
-
+        self.alpha = 0.0})}}
 
 class ViewController: UIViewController, UICollisionBehaviorDelegate {
     
@@ -84,6 +63,7 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
         allViews.append(paddle)
         bothArray.append(paddle)
         paddleArray.append(paddle)
+        paddle.clipsToBounds = true
         
     }
     /************************************/
@@ -100,11 +80,11 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
     {
         
         var x:CGFloat = 0
-        var y:CGFloat = 50
+        var y:CGFloat = 50 //intitial height from top of view
         
-        for _ in 1...5
+        for _ in 1...5 //rows
         {
-            for _ in 1...13
+            for _ in 1...13//columns
             {
                 let block = UIView(frame: CGRectMake(x, y, lob, hob))
                 block.backgroundColor = UIColor.blackColor()
@@ -115,10 +95,10 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
                 bothArray.append(block)
                 collisionBehavior.addItem(block)
                 
-                x += 60
+                x += (10 + lob) //space between horizontally + length of block
             }
-            x = 0
-            y += 30
+            x = 0 //begin new row at 0
+            y += (15 + hob) //space between vertically + height of block
         }
         
         allViews.append(paddle)
@@ -232,7 +212,35 @@ func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item: 
 
        func setupBehaviors()
     {
-               
+        
+        let blockDynamicItemBehavior = UIDynamicItemBehavior(items: blocks)
+        blockDynamicItemBehavior.density = 1000000.0
+        blockDynamicItemBehavior.elasticity = 1.0
+        blockDynamicItemBehavior.allowsRotation = true
+        dynamicAnimator.addBehavior(blockDynamicItemBehavior)
+        
+        
+        let ballDynamicBehavior = UIDynamicItemBehavior(items: startBallArray)
+        ballDynamicBehavior.friction = 0
+        ballDynamicBehavior.resistance = 0
+        ballDynamicBehavior.elasticity = 1.0
+        ballDynamicBehavior.allowsRotation = false
+        dynamicAnimator.addBehavior(ballDynamicBehavior)
+        
+        
+        let paddleDynamicBehavior = UIDynamicItemBehavior(items: paddleArray)
+        paddleDynamicBehavior.density = 1000
+        //paddleDynamicBehavior.resistance = 100
+        paddleDynamicBehavior.allowsRotation = false
+        dynamicAnimator.addBehavior(paddleDynamicBehavior)
+        
+        
+        
+        collisionBehavior = UICollisionBehavior(items: allViews)
+        collisionBehavior.translatesReferenceBoundsIntoBoundary = true
+        collisionBehavior.collisionMode = .Everything
+        collisionBehavior.collisionDelegate = self
+        dynamicAnimator.addBehavior(collisionBehavior)
     }
     /************************************/
 
