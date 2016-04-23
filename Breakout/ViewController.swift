@@ -269,6 +269,7 @@ func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item: 
         pushBehavior = UIPushBehavior(items: startBallArray, mode: .Instantaneous)
         pushBehavior.pushDirection = CGVectorMake(0.2, 1.0)
         pushBehavior.magnitude = 0.35
+        pushBehavior.active = true
         dynamicAnimator.addBehavior(pushBehavior)
         
         
@@ -358,7 +359,9 @@ func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item: 
     
     /************************************/
 
-   
+    @IBAction func setAngle(sender: UIButton) {
+        
+    }
     
 }
 
