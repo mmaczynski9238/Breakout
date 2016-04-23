@@ -19,6 +19,20 @@
                         <subviews>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IgA-KI-6vk">
                                 <rect key="frame" x="0.0" y="0.0" width="768" height="978"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CpF-ha-QJf">
+                                        <rect key="frame" x="202" y="886" width="364" height="15"/>
+                                        <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="1" alpha="0.90662715517241377" colorSpace="calibratedRGB"/>
+                                        <gestureRecognizers/>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="N0H-oN-lFH" appends="YES" id="wC1-sF-dVz"/>
+                                        </connections>
+                                    </view>
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ozz-6h-cfZ">
+                                        <rect key="frame" x="0.0" y="0.0" width="768" height="22"/>
+                                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                    </view>
+                                </subviews>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.79363364361702127" colorSpace="calibratedRGB"/>
                             </view>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PRA-wI-sCh">
@@ -37,14 +51,6 @@
                                     </barButtonItem>
                                 </items>
                             </toolbar>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CpF-ha-QJf">
-                                <rect key="frame" x="202" y="851" width="364" height="23"/>
-                                <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="1" alpha="0.90662715517241377" colorSpace="calibratedRGB"/>
-                                <gestureRecognizers/>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="N0H-oN-lFH" appends="YES" id="wC1-sF-dVz"/>
-                                </connections>
-                            </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Score: 0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Kp-uN-rq6">
                                 <rect key="frame" x="521" y="991" width="124" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -66,6 +72,9 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="AgR-eu-0f9" appends="YES" id="UV6-Bw-Rup"/>
+                        </connections>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
                     <connections>
@@ -81,6 +90,12 @@
                     <connections>
                         <action selector="gestureRecognizer:" destination="BYZ-38-t0r" id="yyv-9d-sil"/>
                         <outlet property="delegate" destination="BYZ-38-t0r" id="x9p-ZX-Mbr"/>
+                    </connections>
+                </panGestureRecognizer>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="AgR-eu-0f9">
+                    <connections>
+                        <action selector="viewGestureRecognizer:" destination="BYZ-38-t0r" id="uoI-T8-8Fh"/>
+                        <outlet property="delegate" destination="BYZ-38-t0r" id="iXt-ql-PBU"/>
                     </connections>
                 </panGestureRecognizer>
             </objects>

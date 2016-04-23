@@ -74,12 +74,17 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
         dynamicAnimator.updateItemUsingCurrentState(paddle)
     }
     
+    @IBAction func viewGestureRecognizer(sender: UIPanGestureRecognizer) {
+        let panGesture = sender.locationInView(view)
+        paddle.center = CGPointMake(panGesture.x, paddle.center.y)
+        dynamicAnimator.updateItemUsingCurrentState(paddle)
+    }
     /************Create UIViews***********/
     
     func createBlocks()
     {
         
-        var x:CGFloat = 0
+        var x:CGFloat = 0 //initial distance from left wall
         var y:CGFloat = 50 //intitial height from top of view
         
         for _ in 1...5 //rows
@@ -246,7 +251,7 @@ func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item: 
     }
     /************************************/
 
-     /***********Game Functions**********/
+    /***********Game Functions***********/
 
     
     
@@ -315,7 +320,6 @@ func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item: 
         ball.removeFromSuperview()
         collisionBehavior.removeItem(ball)
         dynamicAnimator.updateItemUsingCurrentState(ball)
-        
         dynamicAnimator.updateItemUsingCurrentState(paddle)
         
         paddle.hidden = true
@@ -323,7 +327,6 @@ func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item: 
         for block in blocks
         {
         block.removeFromSuperview()
-        
         collisionBehavior.removeItem(block)
         }
     
