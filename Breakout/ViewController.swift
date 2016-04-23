@@ -87,7 +87,7 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
             for _ in 1...13//columns
             {
                 let block = UIView(frame: CGRectMake(x, y, lob, hob))
-                block.backgroundColor = UIColor.blackColor()
+                block.backgroundColor = UIColor.whiteColor()
                 view.addSubview(block)
                 
                 blocks.append(block)
@@ -113,7 +113,7 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
     func createBall()
     {
         ball = UIView(frame: CGRectMake(300, 300, 20, 20))
-        ball.backgroundColor = UIColor.redColor()
+        ball.backgroundColor = UIColor.init(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0)
         view.addSubview(ball)
         ball.layer.cornerRadius = ball.frame.size.width/2
         ball.clipsToBounds = true
@@ -135,12 +135,12 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
             {
                 
                 
-                if block.backgroundColor == UIColor.blackColor()
+                if block.backgroundColor == UIColor.whiteColor()
                 {
                     block.backgroundColor = UIColor.greenColor()
                     score += 1
                     scorePlusLabel.text = "+1"
-                    scorePlusLabel.textColor = UIColor.blackColor()
+                    scorePlusLabel.textColor = UIColor.whiteColor()
                     scorePlusLabel.alpha = 0.0
                     scorePlusLabel.fadeIn(duration: 0.1)
                     scorePlusLabel.fadeOut(duration: 0.3)
@@ -151,7 +151,7 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
                     
                     score += 5
                     scorePlusLabel.text = "+5"
-                    scorePlusLabel.textColor = UIColor.blackColor()
+                    scorePlusLabel.textColor = UIColor.whiteColor()
                     scorePlusLabel.alpha = 0.0
                     scorePlusLabel.fadeIn(duration: 0.1)
                     scorePlusLabel.fadeOut(duration: 0.3)
@@ -162,7 +162,7 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
                 
                     score += 10
                     scorePlusLabel.text = "+10"
-                    scorePlusLabel.textColor = UIColor.blackColor()
+                    scorePlusLabel.textColor = UIColor.whiteColor()
                     scorePlusLabel.alpha = 0.0
                     scorePlusLabel.fadeIn(duration: 0.1)
                     scorePlusLabel.fadeOut(duration: 0.3)
@@ -216,6 +216,7 @@ func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item: 
         let blockDynamicItemBehavior = UIDynamicItemBehavior(items: blocks)
         blockDynamicItemBehavior.density = 1000000.0
         blockDynamicItemBehavior.elasticity = 1.0
+        blockDynamicItemBehavior.anchored = true
         blockDynamicItemBehavior.allowsRotation = true
         dynamicAnimator.addBehavior(blockDynamicItemBehavior)
         
@@ -231,6 +232,7 @@ func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item: 
         let paddleDynamicBehavior = UIDynamicItemBehavior(items: paddleArray)
         paddleDynamicBehavior.density = 1000
         //paddleDynamicBehavior.resistance = 100
+        paddleDynamicBehavior.anchored = true
         paddleDynamicBehavior.allowsRotation = false
         dynamicAnimator.addBehavior(paddleDynamicBehavior)
         
